@@ -10,6 +10,8 @@ public class Recursos {
 
     public TextureRegion ground;
     public TextureRegion wall;
+    public TextureRegion player;
+    public TextureRegion base;
 
     public static final int TILE_SIZE=16;
 
@@ -19,6 +21,8 @@ public class Recursos {
         ground=gameSprites.findRegion("ground");
         wall=gameSprites.findRegion("wall");
 
+        player=gameSprites.findRegion("player");
+        base=gameSprites.findRegion("base");
     }
 
     public void dispose(){
