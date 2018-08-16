@@ -1,6 +1,8 @@
 package com.mygdx.game.Pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,10 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mygdx.game.Graficos.Fondo;
 import com.mygdx.game.Graficos.SizeEvaluator;
+import com.mygdx.game.Logica.GameLogic;
+import com.mygdx.game.Logica.Objetos.Player;
 import com.mygdx.game.MTutorial;
 import com.mygdx.game.Recursos;
 
-public class GameScreen extends DefaultScreen {
+import static com.mygdx.game.Logica.GameLogic.MAX_BASE_X;
+import static com.mygdx.game.Logica.GameLogic.MAX_BASE_Y;
+
+public class GameScreen extends DefaultScreen implements InputProcessor {
 
     SpriteBatch batch;
 
@@ -24,8 +31,9 @@ public class GameScreen extends DefaultScreen {
     private Stage gameStage;
     private Fondo fondo;
     private SizeEvaluator sizeEvaluator;
-    public static final int MAX_BASE_X=3;
-    public static final int MAX_BASE_Y=3;
+    private GameLogic logica;
+    private Player jugador;
+
 
 
 
@@ -36,6 +44,12 @@ public class GameScreen extends DefaultScreen {
         gameStage= new Stage(viewport, batch);
         fondo=new Fondo();
         sizeEvaluator=new SizeEvaluator(gameStage, juego.res, MAX_BASE_X, MAX_BASE_Y);
+        logica=new GameLogic();
+        jugador=logica.getPlayer();
+
+        jugador.set(juego.res.player);
+        refrescarJugador();
+        Gdx.input.setInputProcessor(this);
 
     }
 
@@ -56,7 +70,7 @@ public class GameScreen extends DefaultScreen {
             }
         }
 
-        batch.draw(juego.res.player, sizeEvaluator.getBaseScreenX(1), sizeEvaluator.getBaseScreenY(1)+ SizeEvaluator.BASE_MARGIN);
+
         batch.end();
     }
 
@@ -69,6 +83,10 @@ public class GameScreen extends DefaultScreen {
 
         fondo.draw(gameStage, juego.res);
         drawBases();
+        batch.begin();
+        jugador.draw(batch);
+        batch.end();
+
         gameStage.draw();
 
     }
@@ -78,6 +96,7 @@ public class GameScreen extends DefaultScreen {
 
         super.dispose();
         batch.dispose();
+        Gdx.input.setInputProcessor(null);
 
     }
 
@@ -85,6 +104,81 @@ public class GameScreen extends DefaultScreen {
     public void resize(int width, int height) {
         super.resize(width, height);
         gameStage.getViewport().update(width, height, true);
+        refrescarJugador();
 
+    }
+
+    public void refrescarJugador(){
+
+        jugador.setPosition(sizeEvaluator.getBaseScreenX(jugador.getCampoX()), sizeEvaluator.getBaseScreenY(jugador.getCampoY()));
+    }
+
+    public void intentarMover(int dx, int dy){
+
+        if(logica.canMove(jugador.getCampoX()+dx, jugador.getCampoY()+dy)){
+
+            logica.asignarPosicionJugador(jugador.getCampoX()+dx, jugador.getCampoY()+dy);
+            refrescarJugador();
+
+        }
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+
+        switch(keycode){
+
+            case Input.Keys.UP:
+                intentarMover(0,1);
+                break;
+            case Input.Keys.DOWN:
+                intentarMover(0, -1);
+                break;
+            case Input.Keys.LEFT:
+                intentarMover(-1,0);
+                break;
+            case Input.Keys.RIGHT:
+                intentarMover(1,0);
+                break;
+
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }
