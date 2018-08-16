@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mygdx.game.Graficos.Efectos.WarningEffect;
 import com.mygdx.game.Graficos.Fondo;
 import com.mygdx.game.Graficos.SizeEvaluator;
 import com.mygdx.game.Logica.GameLogic;
@@ -50,12 +51,15 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         jugador.set(juego.res.player);
         refrescarJugador();
         Gdx.input.setInputProcessor(this);
+        WarningEffect.create(0,0, logica.getEffectEngine(), sizeEvaluator, juego.res);
+
 
     }
 
     public void update(float delta){
 
         gameStage.act(delta);
+        logica.update(delta);
     }
 
     public void drawBases(){
@@ -83,6 +87,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
         fondo.draw(gameStage, juego.res);
         drawBases();
+        logica.getEffectEngine().draw(batch);
         batch.begin();
         jugador.draw(batch);
         batch.end();

@@ -13,6 +13,7 @@ public class Recursos {
     public TextureRegion wall;
     public Sprite player;
     public TextureRegion base;
+    public TextureRegion warning;
 
     public static final int TILE_SIZE=16;
 
@@ -21,6 +22,7 @@ public class Recursos {
         gameSprites=new TextureAtlas(Gdx.files.internal("packed/game.atlas"));
         ground=gameSprites.findRegion("ground");
         wall=gameSprites.findRegion("wall");
+        warning=gameSprites.findRegion("warning");
 
         player=new Sprite(gameSprites.findRegion("player"));
         base=gameSprites.findRegion("base");
