@@ -45,11 +45,11 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         gameStage= new Stage(viewport, batch);
         fondo=new Fondo();
         sizeEvaluator=new SizeEvaluator(gameStage, juego.res, MAX_BASE_X, MAX_BASE_Y);
-        logica=new GameLogic();
+        logica=new GameLogic(juego);
         jugador=logica.getPlayer();
 
-        jugador.set(juego.res.player);
-        refrescarJugador();
+
+
         Gdx.input.setInputProcessor(this);
         WarningEffect.create(0,0, logica.getEffectEngine(), sizeEvaluator, juego.res);
 
@@ -89,7 +89,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         drawBases();
         logica.getEffectEngine().draw(batch);
         batch.begin();
-        jugador.draw(batch);
+        jugador.draw(batch, sizeEvaluator);
+        logica.getEnemigo().draw(batch, sizeEvaluator);
         batch.end();
 
         gameStage.draw();
@@ -109,21 +110,17 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public void resize(int width, int height) {
         super.resize(width, height);
         gameStage.getViewport().update(width, height, true);
-        refrescarJugador();
 
     }
 
-    public void refrescarJugador(){
 
-        jugador.setPosition(sizeEvaluator.getBaseScreenX(jugador.getCampoX()), sizeEvaluator.getBaseScreenY(jugador.getCampoY()));
-    }
 
     public void intentarMover(int dx, int dy){
 
         if(logica.canMove(jugador.getCampoX()+dx, jugador.getCampoY()+dy)){
 
             logica.asignarPosicionJugador(jugador.getCampoX()+dx, jugador.getCampoY()+dy);
-            refrescarJugador();
+
 
         }
     }

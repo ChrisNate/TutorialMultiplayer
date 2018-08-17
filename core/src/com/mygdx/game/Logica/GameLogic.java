@@ -2,7 +2,9 @@ package com.mygdx.game.Logica;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Graficos.Efectos.EffectsEngine;
+import com.mygdx.game.Logica.Objetos.Enemigo;
 import com.mygdx.game.Logica.Objetos.Player;
+import com.mygdx.game.MTutorial;
 
 public class GameLogic {
 
@@ -10,17 +12,26 @@ public class GameLogic {
     public static final int MAX_BASE_Y=3;
 
     Player player;
+    Enemigo enemigo;
     EffectsEngine effectEngine;
+    MTutorial juego;
 
-    public GameLogic(){
+    public GameLogic(MTutorial game){
 
-        player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y));
+        juego=game;
+        player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res);
+        enemigo= new Enemigo(juego.res);
         effectEngine=new EffectsEngine();
 
     }
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Enemigo getEnemigo(){
+
+        return enemigo;
     }
 
     public boolean canMove(int fx, int fy){

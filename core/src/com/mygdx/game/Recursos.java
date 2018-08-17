@@ -11,7 +11,7 @@ public class Recursos {
 
     public TextureRegion ground;
     public TextureRegion wall;
-    public Sprite player;
+    public Sprite player, enemy;
     public TextureRegion base;
     public TextureRegion warning;
 
@@ -25,6 +25,7 @@ public class Recursos {
         warning=gameSprites.findRegion("warning");
 
         player=new Sprite(gameSprites.findRegion("player"));
+        enemy=new Sprite(gameSprites.findRegion("spider"));
         base=gameSprites.findRegion("base");
     }
 

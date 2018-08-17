@@ -1,5 +1,6 @@
 package com.mygdx.game.Graficos;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.Recursos;
 
@@ -34,6 +35,16 @@ public class SizeEvaluator {
 
         return this.stageMedida.getHeight()/2- ((BASE_MARGIN +Recursos.TILE_SIZE)*2/3) *((this.maxTileBaseY+1)/2 - baseY);
 
+    }
+
+    public float getEnemyX(Sprite enemy){
+
+        return (stageMedida.getWidth()*3/4)-enemy.getWidth()/2;
+    }
+
+    public float getEnemyY(Sprite enemy){
+
+        return (stageMedida.getHeight()/2)-enemy.getHeight()/2;
     }
 
 
