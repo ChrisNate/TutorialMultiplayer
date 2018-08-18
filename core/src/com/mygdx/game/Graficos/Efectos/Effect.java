@@ -2,6 +2,7 @@ package com.mygdx.game.Graficos.Efectos;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Pool;
+import com.mygdx.game.Graficos.SizeEvaluator;
 
 public abstract class Effect  implements Pool.Poolable{
 
@@ -31,7 +32,7 @@ public abstract class Effect  implements Pool.Poolable{
         timeAlive+=delta;
     }
 
-    public abstract void draw(SpriteBatch batch);
+    public abstract void draw(SpriteBatch batch, SizeEvaluator sizeEvaluator);
 
     public boolean isAlive(){
 

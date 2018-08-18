@@ -1,6 +1,7 @@
 package com.mygdx.game.Graficos.Efectos;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Graficos.SizeEvaluator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +36,11 @@ public class EffectsEngine {
         }
     }
 
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch, SizeEvaluator sizeEvaluator){
 
         for(Effect efecto: efectos){
 
-            efecto.draw(batch);
+            efecto.draw(batch, sizeEvaluator);
         }
     }
 

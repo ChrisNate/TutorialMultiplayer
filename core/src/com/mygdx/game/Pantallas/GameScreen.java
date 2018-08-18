@@ -51,7 +51,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 
         Gdx.input.setInputProcessor(this);
-        WarningEffect.create(0,0, logica.getEffectEngine(), sizeEvaluator, juego.res);
+
 
 
     }
@@ -87,7 +87,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
         fondo.draw(gameStage, juego.res);
         drawBases();
-        logica.getEffectEngine().draw(batch);
+        logica.getEffectEngine().draw(batch, sizeEvaluator);
         batch.begin();
         jugador.draw(batch, sizeEvaluator);
         logica.getEnemigo().draw(batch, sizeEvaluator);

@@ -2,11 +2,12 @@ package com.mygdx.game.Logica;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Graficos.Efectos.EffectsEngine;
+import com.mygdx.game.Graficos.Efectos.WarningEffect;
 import com.mygdx.game.Logica.Objetos.Enemigo;
 import com.mygdx.game.Logica.Objetos.Player;
 import com.mygdx.game.MTutorial;
 
-public class GameLogic {
+public class GameLogic implements Enemigo.EnemyAttackListener {
 
     public static final int MAX_BASE_X=3;
     public static final int MAX_BASE_Y=3;
@@ -20,7 +21,7 @@ public class GameLogic {
 
         juego=game;
         player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res);
-        enemigo= new Enemigo(juego.res);
+        enemigo= new Enemigo(juego.res, this);
         effectEngine=new EffectsEngine();
 
     }
@@ -48,6 +49,7 @@ public class GameLogic {
     public void update(float delta){
 
         effectEngine.update(delta);
+        enemigo.update(delta);
 
     }
 
@@ -57,4 +59,15 @@ public class GameLogic {
     }
 
 
+    @Override
+    public void onAttack(boolean[][] tiles) {
+
+        for(int x=0; x<tiles.length; x++){
+
+            for(int y=0; y<tiles[x].length; y++){
+
+                if(tiles[x][y]) WarningEffect.create(x,y, effectEngine, juego.res);
+            }
+        }
+    }
 }
