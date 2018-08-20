@@ -79,9 +79,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
         if(efecto.getCampoX()== player.getCampoX() && efecto.getCampoY()==player.getCampoY()){
 
             player.recibirDamage(1);
-            if(player.getVidas()==0){
-                Gdx.app.exit();
-            }
+
 
         }
 

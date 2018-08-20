@@ -3,10 +3,12 @@ package com.mygdx.game.Pantallas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mygdx.game.Graficos.Efectos.WarningEffect;
 import com.mygdx.game.Graficos.Fondo;
@@ -59,7 +61,9 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public void update(float delta){
 
         gameStage.act(delta);
-        logica.update(delta);
+        if(jugador.getVidas()>0) {
+            logica.update(delta);
+        }
     }
 
     public void drawBases(){
@@ -78,6 +82,36 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         batch.end();
     }
 
+    private void drawUI(){
+
+        batch.begin();
+        drawShadowed("VIDAS: "+ jugador.getVidas(), 5,  gameStage.getHeight(), gameStage.getWidth(), Align.left, Color.WHITE );
+
+        if(jugador.getVidas()<=0) {
+
+            drawShadowed("DEFEAT!", 0, gameStage.getViewport().getScreenY() + gameStage.getHeight() / 2, gameStage.getWidth(), Align.center, Color.RED);
+
+        }
+        batch.end();
+    }
+
+    private void drawShadowed(String str, float x, float y, float width, int align, Color color){
+
+        juego.res.gameFont.setColor(Color.BLACK);
+
+        for(int i=-1; i<2;i++){
+
+            for(int j=-1;j<2;j++){
+
+                juego.res.gameFont.draw(batch, str, x+i, y+j, width, align, false);
+            }
+        }
+
+        juego.res.gameFont.setColor(color);
+        juego.res.gameFont.draw(batch, str, x, y, width, align, false);
+        juego.res.gameFont.setColor(Color.WHITE);
+    }
+
     @Override
     public void render(float delta) {
 
@@ -92,7 +126,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         jugador.draw(batch, sizeEvaluator);
         logica.getEnemigo().draw(batch, sizeEvaluator);
         batch.end();
-
+        drawUI();
         gameStage.draw();
 
     }
@@ -117,7 +151,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
     public void intentarMover(int dx, int dy){
 
-        if(logica.canMove(jugador.getCampoX()+dx, jugador.getCampoY()+dy)){
+        if(jugador.getVidas()>0 && logica.canMove(jugador.getCampoX()+dx, jugador.getCampoY()+dy)){
 
             logica.asignarPosicionJugador(jugador.getCampoX()+dx, jugador.getCampoY()+dy);
 
