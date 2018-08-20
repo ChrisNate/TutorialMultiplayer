@@ -1,5 +1,6 @@
 package com.mygdx.game.Logica;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Graficos.Efectos.EffectsEngine;
 import com.mygdx.game.Graficos.Efectos.WarningEffect;
@@ -7,10 +8,11 @@ import com.mygdx.game.Logica.Objetos.Enemigo;
 import com.mygdx.game.Logica.Objetos.Player;
 import com.mygdx.game.MTutorial;
 
-public class GameLogic implements Enemigo.EnemyAttackListener {
+public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.WarningEffectListener {
 
     public static final int MAX_BASE_X=3;
     public static final int MAX_BASE_Y=3;
+    private static final int DEFAULT_PLAYER_LIVES = 3;
 
     Player player;
     Enemigo enemigo;
@@ -20,7 +22,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener {
     public GameLogic(MTutorial game){
 
         juego=game;
-        player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res);
+        player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res, DEFAULT_PLAYER_LIVES);
         enemigo= new Enemigo(juego.res, this);
         effectEngine=new EffectsEngine();
 
@@ -66,8 +68,22 @@ public class GameLogic implements Enemigo.EnemyAttackListener {
 
             for(int y=0; y<tiles[x].length; y++){
 
-                if(tiles[x][y]) WarningEffect.create(x,y, effectEngine, juego.res);
+                if(tiles[x][y]) WarningEffect.create(x,y, effectEngine, juego.res, this);
             }
         }
+    }
+
+    @Override
+    public void onEffectOver(WarningEffect efecto) {
+
+        if(efecto.getCampoX()== player.getCampoX() && efecto.getCampoY()==player.getCampoY()){
+
+            player.recibirDamage(1);
+            if(player.getVidas()==0){
+                Gdx.app.exit();
+            }
+
+        }
+
     }
 }

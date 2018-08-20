@@ -11,21 +11,30 @@ public class WarningEffect extends Effect {
     private int campoX, campoY;
     private Recursos res;
 
-    public static WarningEffect create(int fx, int fy, EffectsEngine parent,  Recursos res){
+    public interface WarningEffectListener{
+
+        public void onEffectOver(WarningEffect efecto);
+    };
+
+    private WarningEffectListener listener;
+
+    public static WarningEffect create(int fx, int fy, EffectsEngine parent,  Recursos res, WarningEffectListener _listener){
 
         WarningEffect efecto=warningPool.obtain();
-        efecto.init(fx, fy, parent, res);
+        efecto.init(fx, fy, parent, res, _listener);
         return efecto;
     }
+
+
 
     public WarningEffect() {
     }
 
-    public void init(int fx, int fy, EffectsEngine parent, Recursos res){
+    public void init(int fx, int fy, EffectsEngine parent, Recursos res, WarningEffectListener listener){
 
         campoX=fx;
         campoY=fy;
-
+        this.listener=listener;
         this.res=res;
         super.init(parent);
     }
@@ -41,9 +50,13 @@ public class WarningEffect extends Effect {
     @Override
     public void update(float delta) {
         super.update(delta);
-        if(timeAlive>WARNING_TIME){
+        if(timeAlive>WARNING_TIME && isAlive()){
 
             isAlive=false;
+            if(listener!=null){
+
+                listener.onEffectOver(this);
+            }
         }
     }
 
@@ -61,4 +74,13 @@ public class WarningEffect extends Effect {
             return new WarningEffect();
         }
     };
+
+    public int getCampoX(){
+
+        return campoX;
+    }
+
+    public int getCampoY(){
+        return campoY;
+    }
 }

@@ -9,12 +9,25 @@ public class Player extends Sprite {
 
     private int campoX;
     private int campoY;
+    private int vidas;
 
-    public Player(int fx, int fy, Recursos res){
+    public Player(int fx, int fy, Recursos res, int vidas){
 
         campoX=fx;
         campoY=fy;
         set(res.player);
+        this.vidas=vidas;
+    }
+
+    public int getVidas(){
+
+        return vidas;
+    }
+
+    public void recibirDamage(int valor){
+
+        this.vidas-=valor;
+        if(vidas<0)vidas=0;
     }
 
     public int getCampoX() {
