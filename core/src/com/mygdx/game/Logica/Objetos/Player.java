@@ -10,6 +10,7 @@ public class Player extends Sprite {
     private int campoX;
     private int campoY;
     private int vidas;
+    private final int max_lives;
 
     public Player(int fx, int fy, Recursos res, int vidas){
 
@@ -17,6 +18,8 @@ public class Player extends Sprite {
         campoY=fy;
         set(res.player);
         this.vidas=vidas;
+        max_lives=vidas;
+
     }
 
     public int getVidas(){
@@ -46,7 +49,15 @@ public class Player extends Sprite {
         this.campoY = campoY;
     }
 
-    public void draw(SpriteBatch batch, SizeEvaluator sz){
+
+    public void addVidas(int total){
+
+        vidas+=total;
+        if(vidas>max_lives)vidas=max_lives;
+
+    }
+
+    public void draw(SpriteBatch batch, SizeEvaluator sz) {
 
         setPosition(sz.getBaseScreenX(campoX), sz.getBaseScreenY(campoY));
         super.draw(batch);

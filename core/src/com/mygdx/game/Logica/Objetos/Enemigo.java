@@ -16,6 +16,14 @@ public class Enemigo extends Sprite {
     private boolean targetTiles[][];
     private int vidas;
 
+    public void recibeDamage(int cantidad) {
+
+        vidas-=cantidad;
+        if(vidas<0)vidas=0;
+
+
+    }
+
     public interface EnemyAttackListener{
 
         void onAttack(boolean [][] tiles);

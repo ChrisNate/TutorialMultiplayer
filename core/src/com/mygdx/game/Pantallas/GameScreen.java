@@ -62,7 +62,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public void update(float delta){
 
         gameStage.act(delta);
-        if(jugador.getVidas()>0) {
+        if(jugador.getVidas()>0 && logica.getEnemigo().getVidas()>0) {
             logica.update(delta);
         }
     }
@@ -83,6 +83,12 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         batch.end();
     }
 
+    private void mostrarResultadoJuego(String str){
+
+        drawShadowed(str, 0, gameStage.getViewport().getScreenY() + gameStage.getHeight() / 2, gameStage.getWidth(), Align.center, Color.RED);
+
+    }
+
     private void drawUI(){
 
         batch.begin();
@@ -90,8 +96,11 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         drawShadowed("ENEMIGO: "+ logica.getEnemigo().getVidas(), 0,  gameStage.getHeight(), gameStage.getWidth()-5, Align.right, Color.WHITE );
         if(jugador.getVidas()<=0) {
 
-            drawShadowed("DEFEAT!", 0, gameStage.getViewport().getScreenY() + gameStage.getHeight() / 2, gameStage.getWidth(), Align.center, Color.RED);
+          mostrarResultadoJuego("DERROTA");
 
+        }else if(logica.getEnemigo().getVidas()<=0){
+
+           mostrarResultadoJuego("VICTORIA");
         }
         batch.end();
     }
@@ -156,7 +165,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
     public void intentarMover(int dx, int dy){
 
-        if(jugador.getVidas()>0 && logica.canMove(jugador.getCampoX()+dx, jugador.getCampoY()+dy)){
+        if(jugador.getVidas()>0 && logica.getEnemigo().getVidas()>0 && logica.canMove(jugador.getCampoX()+dx, jugador.getCampoY()+dy)){
 
             logica.asignarPosicionJugador(jugador.getCampoX()+dx, jugador.getCampoY()+dy);
 

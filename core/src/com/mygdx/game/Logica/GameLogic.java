@@ -57,6 +57,28 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
         player.setCampoX(fx);
         player.setCampoY(fy);
 
+        for(int i=bonus.size()-1; i>=0; i--){
+
+            Bonus bonusActual=bonus.get(i);
+            if(bonusActual.getCampoX()==fx && bonusActual.getCampoY()==fy){
+
+                if(bonusActual.getBonusType()==Bonus.BONUS_TYPE_HEALTH){
+
+                    player.addVidas(1);
+
+                }else if(bonusActual.getBonusType()==Bonus.BONUS_TYPE_ATTACK){
+
+                    enemigo.recibeDamage(1);
+
+                }
+
+                bonusActual.release();
+                bonus.remove(i);
+                break;
+            }
+
+        }
+
     }
 
     private void spawnRandomBonus(){
