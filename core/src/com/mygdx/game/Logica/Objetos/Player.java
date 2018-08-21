@@ -5,15 +5,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Graficos.SizeEvaluator;
 import com.mygdx.game.Recursos;
 
-public class Player extends Sprite {
+public class Player extends Character {
 
     private int campoX;
     private int campoY;
-    private int vidas;
     private final int max_lives;
 
     public Player(int fx, int fy, Recursos res, int vidas){
 
+        super(vidas);
         campoX=fx;
         campoY=fy;
         set(res.player);
@@ -22,16 +22,9 @@ public class Player extends Sprite {
 
     }
 
-    public int getVidas(){
 
-        return vidas;
-    }
 
-    public void recibirDamage(int valor){
 
-        this.vidas-=valor;
-        if(vidas<0)vidas=0;
-    }
 
     public int getCampoX() {
         return campoX;
@@ -59,7 +52,9 @@ public class Player extends Sprite {
 
     public void draw(SpriteBatch batch, SizeEvaluator sz) {
 
+        preDraw();
         setPosition(sz.getBaseScreenX(campoX), sz.getBaseScreenY(campoY));
         super.draw(batch);
+        postDraw();
     }
 }

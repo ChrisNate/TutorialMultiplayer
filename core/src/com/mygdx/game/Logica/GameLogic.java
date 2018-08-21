@@ -1,6 +1,5 @@
 package com.mygdx.game.Logica;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Graficos.Efectos.EffectsEngine;
 import com.mygdx.game.Graficos.Efectos.WarningEffect;
@@ -68,7 +67,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
                 }else if(bonusActual.getBonusType()==Bonus.BONUS_TYPE_ATTACK){
 
-                    enemigo.recibeDamage(1);
+                    enemigo.recibirDamage(1);
 
                 }
 
@@ -113,6 +112,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
         gameTime+=delta;
         effectEngine.update(delta);
+        player.update(delta);
         enemigo.update(delta);
 
         if(lastBonusSpawnTime+ BONUS_SPAWN_INTERVAL < gameTime && bonus.size()<MAX_BONUS_ON_FIELD){

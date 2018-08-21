@@ -7,22 +7,14 @@ import com.mygdx.game.Graficos.SizeEvaluator;
 import com.mygdx.game.Logica.GameLogic;
 import com.mygdx.game.Recursos;
 
-public class Enemigo extends Sprite {
+public class Enemigo extends Character {
 
     private static final float BASE_ATTACK_TIME=3.0f;
     private static final int DEFAULT_ENEMY_LIVES=10;
 
     private float timeSinceAttack, nextAttackTime;
     private boolean targetTiles[][];
-    private int vidas;
 
-    public void recibeDamage(int cantidad) {
-
-        vidas-=cantidad;
-        if(vidas<0)vidas=0;
-
-
-    }
 
     public interface EnemyAttackListener{
 
@@ -33,7 +25,7 @@ public class Enemigo extends Sprite {
 
     public Enemigo(Recursos res, EnemyAttackListener listener){
 
-        vidas=DEFAULT_ENEMY_LIVES;
+        super(DEFAULT_ENEMY_LIVES);
         set(res.enemy);
         resetAttackTime();
         attackListener=listener;
@@ -46,24 +38,23 @@ public class Enemigo extends Sprite {
 
     public void draw(SpriteBatch batch, SizeEvaluator sz){
 
+        preDraw();
         setPosition(sz.getEnemyX(this), sz.getEnemyY(this));
         super.draw(batch);
-
+        postDraw();
     }
 
-    public int getVidas(){
 
-        return vidas;
-    }
 
     public void resetAttackTime(){
 
         timeSinceAttack=0;
         nextAttackTime=BASE_ATTACK_TIME + MathUtils.random(2);
     }
-
+    @Override
     public void update(float delta){
 
+        super.update(delta);
         timeSinceAttack+=delta;
         if(timeSinceAttack> nextAttackTime){
 
