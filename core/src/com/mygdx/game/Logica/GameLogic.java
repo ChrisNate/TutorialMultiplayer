@@ -4,20 +4,27 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Graficos.Efectos.EffectsEngine;
 import com.mygdx.game.Graficos.Efectos.WarningEffect;
+import com.mygdx.game.Logica.Objetos.Bonus;
 import com.mygdx.game.Logica.Objetos.Enemigo;
 import com.mygdx.game.Logica.Objetos.Player;
 import com.mygdx.game.MTutorial;
+
+import java.util.ArrayList;
 
 public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.WarningEffectListener {
 
     public static final int MAX_BASE_X=3;
     public static final int MAX_BASE_Y=3;
     private static final int DEFAULT_PLAYER_LIVES = 3;
+    private static final float BONUS_SPAWN_INTERVAL = 2.0f ;
+    private static final int MAX_BONUS_ON_FIELD = 3;
 
     Player player;
     Enemigo enemigo;
     EffectsEngine effectEngine;
     MTutorial juego;
+    ArrayList<Bonus> bonus;
+    float gameTime, lastBonusSpawnTime;
 
     public GameLogic(MTutorial game){
 
@@ -25,6 +32,10 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
         player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res, DEFAULT_PLAYER_LIVES);
         enemigo= new Enemigo(juego.res, this);
         effectEngine=new EffectsEngine();
+        bonus=new ArrayList<Bonus>();
+        gameTime=0;
+        lastBonusSpawnTime=0;
+
 
     }
 
@@ -48,10 +59,46 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
     }
 
+    private void spawnRandomBonus(){
+
+        int fx=0;
+        int fy=0;
+        boolean targetNonEmpty=true;
+        do{
+
+            fx=MathUtils.random(MAX_BASE_X);
+            fy=MathUtils.random(MAX_BASE_Y);
+            targetNonEmpty=player.getCampoX()==fx || fy==player.getCampoY();
+            for(int i=0; i<bonus.size() && targetNonEmpty; i++){
+
+                if(bonus.get(i).getCampoX()==fx && bonus.get(i).getCampoY()==fy){
+                    targetNonEmpty=true;
+                }
+            }
+
+
+        }while(targetNonEmpty);
+
+        byte tipo=1;
+        float random=MathUtils.random();
+        if(random<0.5f)tipo=0;
+        bonus.add(Bonus.Create(fx,fy, tipo, juego.res));
+        lastBonusSpawnTime=gameTime;
+
+    }
+
     public void update(float delta){
 
+        gameTime+=delta;
         effectEngine.update(delta);
         enemigo.update(delta);
+
+        if(lastBonusSpawnTime+ BONUS_SPAWN_INTERVAL < gameTime && bonus.size()<MAX_BONUS_ON_FIELD){
+
+            spawnRandomBonus();
+
+        }
+
 
     }
 
@@ -83,5 +130,9 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
         }
 
+    }
+
+    public ArrayList<Bonus> getBonus() {
+        return bonus;
     }
 }

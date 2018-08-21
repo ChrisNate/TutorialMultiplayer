@@ -10,9 +10,11 @@ import com.mygdx.game.Recursos;
 public class Enemigo extends Sprite {
 
     private static final float BASE_ATTACK_TIME=3.0f;
+    private static final int DEFAULT_ENEMY_LIVES=10;
 
     private float timeSinceAttack, nextAttackTime;
     private boolean targetTiles[][];
+    private int vidas;
 
     public interface EnemyAttackListener{
 
@@ -23,6 +25,7 @@ public class Enemigo extends Sprite {
 
     public Enemigo(Recursos res, EnemyAttackListener listener){
 
+        vidas=DEFAULT_ENEMY_LIVES;
         set(res.enemy);
         resetAttackTime();
         attackListener=listener;
@@ -38,6 +41,11 @@ public class Enemigo extends Sprite {
         setPosition(sz.getEnemyX(this), sz.getEnemyY(this));
         super.draw(batch);
 
+    }
+
+    public int getVidas(){
+
+        return vidas;
     }
 
     public void resetAttackTime(){

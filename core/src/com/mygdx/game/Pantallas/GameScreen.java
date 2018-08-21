@@ -14,6 +14,7 @@ import com.mygdx.game.Graficos.Efectos.WarningEffect;
 import com.mygdx.game.Graficos.Fondo;
 import com.mygdx.game.Graficos.SizeEvaluator;
 import com.mygdx.game.Logica.GameLogic;
+import com.mygdx.game.Logica.Objetos.Bonus;
 import com.mygdx.game.Logica.Objetos.Player;
 import com.mygdx.game.MTutorial;
 import com.mygdx.game.Recursos;
@@ -86,7 +87,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
         batch.begin();
         drawShadowed("VIDAS: "+ jugador.getVidas(), 5,  gameStage.getHeight(), gameStage.getWidth(), Align.left, Color.WHITE );
-
+        drawShadowed("ENEMIGO: "+ logica.getEnemigo().getVidas(), 0,  gameStage.getHeight(), gameStage.getWidth()-5, Align.right, Color.WHITE );
         if(jugador.getVidas()<=0) {
 
             drawShadowed("DEFEAT!", 0, gameStage.getViewport().getScreenY() + gameStage.getHeight() / 2, gameStage.getWidth(), Align.center, Color.RED);
@@ -123,6 +124,10 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         drawBases();
         logica.getEffectEngine().draw(batch, sizeEvaluator);
         batch.begin();
+        for(Bonus bonus: logica.getBonus()){
+
+            bonus.draw(batch, sizeEvaluator);
+        }
         jugador.draw(batch, sizeEvaluator);
         logica.getEnemigo().draw(batch, sizeEvaluator);
         batch.end();
