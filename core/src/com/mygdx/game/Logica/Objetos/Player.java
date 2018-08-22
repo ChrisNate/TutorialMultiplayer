@@ -10,6 +10,8 @@ public class Player extends Character {
     private int campoX;
     private int campoY;
     private final int max_lives;
+    private boolean winning=false;
+    private float winTime=0;
     public static final float APPROACH_TIME=1.5f;
 
     public Player(int fx, int fy, Recursos res, int vidas){
@@ -54,11 +56,24 @@ public class Player extends Character {
     public void draw(SpriteBatch batch, SizeEvaluator sz) {
 
         preDraw();
-        if(timeAlive<APPROACH_TIME){
+        if(timeAlive<APPROACH_TIME) {
 
-            float t=timeAlive/APPROACH_TIME;
-            t=t*t;
-            setPosition(t*sz.getBaseScreenX(campoX), sz.getBaseScreenY(campoY));
+            float t = timeAlive / APPROACH_TIME;
+            t = t * t;
+            setPosition(t * sz.getBaseScreenX(campoX), sz.getBaseScreenY(campoY));
+
+        }else if(winning){
+
+            float t=1;
+            if(timeAlive-winTime<APPROACH_TIME){
+
+                t=(timeAlive-winTime)/APPROACH_TIME;
+                t=t*t;
+            }
+
+            float fx=sz.getBaseScreenX(campoX);
+            setPosition(fx + t * (sz.getRightSideX()-fx), sz.getBaseScreenY(campoY));
+
         }else{
 
             setPosition(sz.getBaseScreenX(campoX), sz.getBaseScreenY(campoY));
@@ -67,5 +82,11 @@ public class Player extends Character {
 
         super.draw(batch);
         postDraw();
+    }
+
+    public void markVictoria(){
+
+        winning=true;
+        winTime=timeAlive;
     }
 }

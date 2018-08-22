@@ -68,6 +68,11 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
                 }else if(bonusActual.getBonusType()==Bonus.BONUS_TYPE_ATTACK){
 
                     enemigo.recibirDamage(1);
+                    if(enemigo.getVidas()<=0){
+
+                        player.markVictoria();
+
+                    }
 
                 }
 
@@ -111,14 +116,19 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
     public void update(float delta){
 
         gameTime+=delta;
-        effectEngine.update(delta);
+
         player.update(delta);
-        enemigo.update(delta);
 
-        if(lastBonusSpawnTime+ BONUS_SPAWN_INTERVAL < gameTime && bonus.size()<MAX_BONUS_ON_FIELD){
+        if(player.getVidas()>0 && enemigo.getVidas()>0) {
 
-            spawnRandomBonus();
+            effectEngine.update(delta);
+            enemigo.update(delta);
 
+            if (lastBonusSpawnTime + BONUS_SPAWN_INTERVAL < gameTime && bonus.size() < MAX_BONUS_ON_FIELD) {
+
+                spawnRandomBonus();
+
+            }
         }
 
 

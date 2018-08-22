@@ -50,7 +50,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         ExtendViewport viewport= new ExtendViewport(SCREEN_ANCHO, SCREEN_ALTO);
         gameStage= new Stage(viewport, batch);
         fondo=new Fondo();
-        sizeEvaluator=new SizeEvaluator(gameStage, juego.res, MAX_BASE_X, MAX_BASE_Y);
+        sizeEvaluator=new SizeEvaluator(gameStage, juego.res, MAX_BASE_X, MAX_BASE_Y, gameStage.getWidth());
         logica=new GameLogic(juego);
         jugador=logica.getPlayer();
 
@@ -65,9 +65,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public void update(float delta){
 
         gameStage.act(delta);
-        if(jugador.getVidas()>0 && logica.getEnemigo().getVidas()>0) {
-            logica.update(delta);
-        }
+        logica.update(delta);
+
     }
 
     public void drawBases(){
@@ -166,6 +165,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public void resize(int width, int height) {
         super.resize(width, height);
         gameStage.getViewport().update(width, height, true);
+        sizeEvaluator.setRightSideX(gameStage.getWidth());
 
     }
 

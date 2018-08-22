@@ -8,6 +8,7 @@ public class SizeEvaluator {
 
     private Stage stageMedida;
     private Recursos res;
+    private float rightSideX;
 
     // 4X4
 
@@ -16,11 +17,12 @@ public class SizeEvaluator {
 
     public static final int BASE_MARGIN=3;
 
-    public SizeEvaluator(Stage _stage, Recursos _res, int maxBaseX, int maxBaseY) {
+    public SizeEvaluator(Stage _stage, Recursos _res, int maxBaseX, int maxBaseY, float _rightSideX) {
         this.stageMedida = _stage;
         this.res = _res;
         this.maxTileBaseX = maxBaseX;
         this.maxTileBaseY = maxBaseY;
+        this.rightSideX=_rightSideX;
     }
 
     public float getBaseScreenX(int baseX){ // 0..3
@@ -48,4 +50,12 @@ public class SizeEvaluator {
     }
 
 
+    public float getRightSideX() {
+
+        return rightSideX;
+    }
+
+    public void setRightSideX(float rightSideX) {
+        this.rightSideX = rightSideX;
+    }
 }
