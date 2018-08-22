@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Logica.GameProgress;
 import com.mygdx.game.Pantallas.GameScreen;
 
 public class MTutorial extends Game {
@@ -17,12 +18,14 @@ public class MTutorial extends Game {
 
 
 		res=new Recursos();
+		GameProgress.Load();
 		setScreen(new GameScreen(this));
 
 	}
 
 	@Override
 	public void dispose() {
+		GameProgress.Save();
 		res.dispose();
 	}
 }

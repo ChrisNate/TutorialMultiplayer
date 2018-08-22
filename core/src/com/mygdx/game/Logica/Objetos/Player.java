@@ -3,6 +3,7 @@ package com.mygdx.game.Logica.Objetos;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Graficos.SizeEvaluator;
+import com.mygdx.game.Logica.GameProgress;
 import com.mygdx.game.Recursos;
 
 public class Player extends Character {
@@ -21,7 +22,7 @@ public class Player extends Character {
         campoY=fy;
         set(res.player);
         this.vidas=vidas;
-        max_lives=vidas;
+        max_lives= GameProgress.maxPlayerLive;
 
     }
 

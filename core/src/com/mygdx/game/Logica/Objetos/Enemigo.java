@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Graficos.SizeEvaluator;
 import com.mygdx.game.Logica.GameLogic;
+import com.mygdx.game.Logica.GameProgress;
 import com.mygdx.game.Recursos;
 
 import sun.awt.AWTAccessor;
@@ -12,7 +13,6 @@ import sun.awt.AWTAccessor;
 public class Enemigo extends Character {
 
     private static final float BASE_ATTACK_TIME=3.0f;
-    private static final int DEFAULT_ENEMY_LIVES=10;
     private static float SCALE_TIME=1.5f;
 
     private float timeSinceAttack, nextAttackTime;
@@ -28,7 +28,7 @@ public class Enemigo extends Character {
 
     public Enemigo(Recursos res, EnemyAttackListener listener){
 
-        super(DEFAULT_ENEMY_LIVES);
+        super(GameProgress.getEnemyLives());
         set(res.enemy);
         resetAttackTime();
         attackListener=listener;

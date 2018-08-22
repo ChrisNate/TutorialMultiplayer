@@ -14,7 +14,6 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
     public static final int MAX_BASE_X=3;
     public static final int MAX_BASE_Y=3;
-    private static final int DEFAULT_PLAYER_LIVES = 3;
     private static final float BONUS_SPAWN_INTERVAL = 2.0f ;
     private static final int MAX_BONUS_ON_FIELD = 3;
 
@@ -36,7 +35,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
     public GameLogic(MTutorial game, GameEventListener _listener){
 
         juego=game;
-        player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res, DEFAULT_PLAYER_LIVES);
+        player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res, GameProgress.playerLives);
         enemigo= new Enemigo(juego.res, this);
         effectEngine=new EffectsEngine();
         bonus=new ArrayList<Bonus>();
@@ -76,9 +75,11 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
                 }else if(bonusActual.getBonusType()==Bonus.BONUS_TYPE_ATTACK){
 
-                    enemigo.recibirDamage(1);
+                    enemigo.recibirDamage(GameProgress.playerDamage);
                     if(enemigo.getVidas()<=0){
 
+                        GameProgress.currentLevel+=1;
+                        GameProgress.playerLives=player.getVidas();
                         player.markVictoria();
                         listener.omGameEnd(true);
 
@@ -168,6 +169,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
         if(efecto.getCampoX()== player.getCampoX() && efecto.getCampoY()==player.getCampoY()){
 
             player.recibirDamage(1);
+            if(player.getVidas()<=0)GameProgress.Reset();
 
 
         }
