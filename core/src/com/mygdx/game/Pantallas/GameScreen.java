@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -31,6 +32,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
     public static final int SCREEN_ANCHO= 12* Recursos.TILE_SIZE; // 192
     public static final int SCREEN_ALTO= 8* Recursos.TILE_SIZE; // 128
+    public static final float SHAKE_TIME_ON_DAMAGE=0.3f;
+    public static final float SHAKE_DIST=4.0f;
 
     private Stage gameStage;
     private Fondo fondo;
@@ -140,6 +143,11 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         jugador.draw(batch, sizeEvaluator);
         logica.getEnemigo().draw(batch, sizeEvaluator);
         batch.end();
+        gameStage.getCamera().position.set(gameStage.getWidth()/2, gameStage.getHeight()/2, 0);
+        if(jugador.getVidas()>0 && jugador.getTimeAlive()-jugador.getTimeOfDmgTaken()<SHAKE_TIME_ON_DAMAGE){
+            gameStage.getCamera().translate(-(SHAKE_DIST/2)+ MathUtils.random(SHAKE_DIST), -(SHAKE_DIST/2)+ MathUtils.random(SHAKE_DIST), 0);
+        }
+        gameStage.getCamera().update();
         drawUI();
         gameStage.draw();
 

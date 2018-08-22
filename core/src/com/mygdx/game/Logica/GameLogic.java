@@ -90,7 +90,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
             fx=MathUtils.random(MAX_BASE_X);
             fy=MathUtils.random(MAX_BASE_Y);
             targetNonEmpty=player.getCampoX()==fx || fy==player.getCampoY();
-            for(int i=0; i<bonus.size() && targetNonEmpty; i++){
+            for(int i=0; i<bonus.size() && !targetNonEmpty; i++){
 
                 if(bonus.get(i).getCampoX()==fx && bonus.get(i).getCampoY()==fy){
                     targetNonEmpty=true;

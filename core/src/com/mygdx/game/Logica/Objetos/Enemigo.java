@@ -7,10 +7,13 @@ import com.mygdx.game.Graficos.SizeEvaluator;
 import com.mygdx.game.Logica.GameLogic;
 import com.mygdx.game.Recursos;
 
+import sun.awt.AWTAccessor;
+
 public class Enemigo extends Character {
 
     private static final float BASE_ATTACK_TIME=3.0f;
     private static final int DEFAULT_ENEMY_LIVES=10;
+    private static float SCALE_TIME=1.5f;
 
     private float timeSinceAttack, nextAttackTime;
     private boolean targetTiles[][];
@@ -40,6 +43,16 @@ public class Enemigo extends Character {
 
         preDraw();
         setPosition(sz.getEnemyX(this), sz.getEnemyY(this));
+        if(timeAlive<SCALE_TIME){
+
+            float t=timeAlive/ SCALE_TIME;
+            t=t*t;
+            setScale(t);
+
+        }else{
+
+            setScale(1);
+        }
         super.draw(batch);
         postDraw();
     }
