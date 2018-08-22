@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mygdx.game.Graficos.Efectos.WarningEffect;
@@ -23,7 +25,7 @@ import com.mygdx.game.Recursos;
 import static com.mygdx.game.Logica.GameLogic.MAX_BASE_X;
 import static com.mygdx.game.Logica.GameLogic.MAX_BASE_Y;
 
-public class GameScreen extends DefaultScreen implements InputProcessor {
+public class GameScreen extends DefaultScreen implements InputProcessor, GameLogic.GameEventListener {
 
     SpriteBatch batch;
 
@@ -34,6 +36,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public static final int SCREEN_ALTO= 8* Recursos.TILE_SIZE; // 128
     public static final float SHAKE_TIME_ON_DAMAGE=0.3f;
     public static final float SHAKE_DIST=4.0f;
+    public static final float GAME_END_FADEOUT=1.5f;
+    public static final float GAME_START_FADEIN=1.5f;
 
     private Stage gameStage;
     private Fondo fondo;
@@ -51,12 +55,28 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         gameStage= new Stage(viewport, batch);
         fondo=new Fondo();
         sizeEvaluator=new SizeEvaluator(gameStage, juego.res, MAX_BASE_X, MAX_BASE_Y, gameStage.getWidth());
-        logica=new GameLogic(juego);
+        logica=new GameLogic(juego, this);
         jugador=logica.getPlayer();
 
 
 
         Gdx.input.setInputProcessor(this);
+        gameStage.addAction(
+            new Action(){
+
+                float time=0;
+                @Override
+                public boolean act(float delta) {
+                    time+=delta;
+                    float t=time/GAME_START_FADEIN;
+                    t=t*t;
+                    if(t>1.0f)t=1.0f;
+                    batch.setColor(1,1,1, t);
+                    return time>=GAME_START_FADEIN;
+
+                }
+            }
+        );
 
 
 
@@ -238,5 +258,35 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    @Override
+    public void omGameEnd(boolean playerWon) {
+
+        gameStage.addAction(
+                Actions.sequence(
+                    new Action(){
+
+                        float time=0;
+                        @Override
+                        public boolean act(float delta) {
+                            time+=delta;
+                            float t=time/GAME_END_FADEOUT;
+                            t=t*t;
+                            batch.setColor(1,1,1,1-t);
+                            return time>=GAME_END_FADEOUT;
+                        }
+                    },
+                    new Action(){
+
+                        @Override
+                        public boolean act(float delta) {
+                            dispose();
+                            juego.setScreen(new GameScreen(juego));
+                            return true;
+                        }
+                    }
+                )
+        );
     }
 }

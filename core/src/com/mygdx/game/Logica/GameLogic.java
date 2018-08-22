@@ -18,14 +18,22 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
     private static final float BONUS_SPAWN_INTERVAL = 2.0f ;
     private static final int MAX_BONUS_ON_FIELD = 3;
 
+    public interface GameEventListener{
+
+        void omGameEnd(boolean playerWon);
+    }
+
+
+
     Player player;
     Enemigo enemigo;
     EffectsEngine effectEngine;
     MTutorial juego;
     ArrayList<Bonus> bonus;
     float gameTime, lastBonusSpawnTime;
+    GameEventListener listener;
 
-    public GameLogic(MTutorial game){
+    public GameLogic(MTutorial game, GameEventListener _listener){
 
         juego=game;
         player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res, DEFAULT_PLAYER_LIVES);
@@ -34,6 +42,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
         bonus=new ArrayList<Bonus>();
         gameTime=0;
         lastBonusSpawnTime=0;
+        listener=_listener;
 
 
     }
@@ -71,6 +80,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
                     if(enemigo.getVidas()<=0){
 
                         player.markVictoria();
+                        listener.omGameEnd(true);
 
                     }
 
