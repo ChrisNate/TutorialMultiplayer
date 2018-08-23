@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.Logica.Objetos.CharacterRecord;
 
 import java.util.HashMap;
 
@@ -16,6 +17,7 @@ public class Recursos {
     public TextureRegion wall;
     public Sprite player;
     public HashMap<Integer, Sprite> enemySprite;
+    public HashMap<String, Sprite> playerSprites;
     public TextureRegion base;
     public TextureRegion warning;
     public BitmapFont gameFont;
@@ -47,6 +49,15 @@ public class Recursos {
         enemySprite.put(ENEMY_DIAGONAL, gameSprites.createSprite("bat"));
         enemySprite.put(ENEMY_RANDOM, gameSprites.createSprite("slime"));
         enemySprite.put(ENEMY_UNIVERSAL, gameSprites.createSprite("skeleton"));
+
+        playerSprites=new HashMap<String, Sprite>();
+        playerSprites.put(CharacterRecord.CHAR_NAME_HUMAN, gameSprites.createSprite("player"));
+        playerSprites.put(CharacterRecord.CHAR_NAME_SPIDER, gameSprites.createSprite("spider"));
+        playerSprites.put(CharacterRecord.CHAR_NAME_GHOST, gameSprites.createSprite("ghost"));
+        playerSprites.put(CharacterRecord.CHAR_NAME_BAT, gameSprites.createSprite("bat"));
+        playerSprites.put(CharacterRecord.CHAR_NAME_SLIME, gameSprites.createSprite("slime"));
+        playerSprites.put(CharacterRecord.CHAR_NAME_SKELETON, gameSprites.createSprite("skeleton"));
+
         base=gameSprites.findRegion("base");
     }
 

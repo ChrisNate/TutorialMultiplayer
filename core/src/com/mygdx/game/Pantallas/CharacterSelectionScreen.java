@@ -9,16 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.Logica.GameProgress;
+import com.mygdx.game.Logica.Objetos.CharacterRecord;
 import com.mygdx.game.MTutorial;
 import com.mygdx.game.Recursos;
 
 public class CharacterSelectionScreen extends DefaultScreen {
 
     Stage uiStage;
-    int currentCharacter;
+
     public CharacterSelectionScreen(MTutorial _game) {
         super(_game);
-        currentCharacter=0;
         FitViewport viewport=new FitViewport(160,120);
         uiStage= new Stage(viewport);
         Gdx.input.setInputProcessor(uiStage);
@@ -49,16 +50,43 @@ public class CharacterSelectionScreen extends DefaultScreen {
                                 }
         );
         uiStage.addActor(startButton);
-        Image heroSprite= new Image(juego.res.player);
+        Image heroSprite= new Image(juego.res.playerSprites.get(CharacterRecord.CHARACTERS[GameProgress.currentCharacter].name));
         heroSprite.setPosition((uiStage.getWidth()-heroSprite.getWidth())/2, (uiStage.getHeight()-heroSprite.getHeight())/2 );
         uiStage.addActor(heroSprite);
 
         TextButton nextButton=new TextButton(">>>", buttonStyle);
         nextButton.setPosition(uiStage.getWidth()*5/6 - nextButton.getWidth()/2, uiStage.getHeight()/2);
+        nextButton.addListener(new ClickListener()
+                                {
+                                    @Override
+                                    public void touchUp(InputEvent event, float x, float y, int pointer, int button ){
+
+                                        GameProgress.currentCharacter++;
+                                        if(GameProgress.currentCharacter==CharacterRecord.CHARACTERS.length)GameProgress.currentCharacter=0;
+                                        uiStage.clear();
+                                        prepareUI();
+                                    }
+
+                                }
+        );
+
         uiStage.addActor(nextButton);
 
         TextButton prevButton=new TextButton("<<<", buttonStyle);
         prevButton.setPosition(uiStage.getWidth()/6, uiStage.getHeight()/2);
+        prevButton.addListener(new ClickListener()
+                               {
+                                   @Override
+                                   public void touchUp(InputEvent event, float x, float y, int pointer, int button ){
+
+                                       GameProgress.currentCharacter--;
+                                       if(GameProgress.currentCharacter<0)GameProgress.currentCharacter=CharacterRecord.CHARACTERS.length-1;
+                                       uiStage.clear();
+                                       prepareUI();
+                                   }
+
+                               }
+        );
         uiStage.addActor(prevButton);
 
     }
