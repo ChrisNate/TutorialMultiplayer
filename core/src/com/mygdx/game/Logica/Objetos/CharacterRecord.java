@@ -34,4 +34,29 @@ public class CharacterRecord {
             new CharacterRecord(3,3,4,1,CHAR_NAME_SLIME),
             new CharacterRecord(4, 6,2,2, CHAR_NAME_BAT)
     };
+
+    public int getMaxHp(int level){
+
+        return 3 + level/levelsForHpUpgrade;
+    }
+
+    public int getDamage(int level){
+
+        return 1+ level/levelsForAttackUpgrade;
+    }
+
+    public int getHpRestored(int level){
+
+        return 1+ level/levelsForHpRegenUpgrade;
+
+    }
+
+    public float getBonusSpawnReduction(int level){
+
+        int bonusSpawnLvl= level/ levelsForBonusSpawnUpgrade;
+        return bonusSpawnLvl/(30 + bonusSpawnLvl);
+
+    }
+
+
 }

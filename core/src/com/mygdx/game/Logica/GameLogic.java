@@ -15,7 +15,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
     public static final int MAX_BASE_X=3;
     public static final int MAX_BASE_Y=3;
-    private static final float BONUS_SPAWN_INTERVAL = 2.0f ;
+    private final float BONUS_SPAWN_INTERVAL;
     private static final int MAX_BONUS_ON_FIELD = 3;
 
     public interface GameEventListener{
@@ -35,6 +35,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
     public GameLogic(MTutorial game, GameEventListener _listener){
 
+        BONUS_SPAWN_INTERVAL=2.0f * (1-GameProgress.getPlayerBonusreduction());
         juego=game;
         player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res, GameProgress.playerLives);
         enemigo= new Enemigo(juego.res, this, MathUtils.random(Recursos.ENEMY_UNIVERSAL) );
@@ -72,11 +73,11 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
                 if(bonusActual.getBonusType()==Bonus.BONUS_TYPE_HEALTH){
 
-                    player.addVidas(1);
+                    player.addVidas(GameProgress.getPlayerHealthRestored());
 
                 }else if(bonusActual.getBonusType()==Bonus.BONUS_TYPE_ATTACK){
 
-                    enemigo.recibirDamage(GameProgress.playerDamage);
+                    enemigo.recibirDamage(GameProgress.getPlayerDamage());
                     if(enemigo.getVidas()<=0){
 
                         GameProgress.currentLevel+=1;

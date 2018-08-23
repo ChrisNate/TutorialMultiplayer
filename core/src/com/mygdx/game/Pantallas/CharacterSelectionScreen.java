@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Logica.GameProgress;
 import com.mygdx.game.Logica.Objetos.CharacterRecord;
@@ -28,17 +29,27 @@ public class CharacterSelectionScreen extends DefaultScreen {
 
     }
 
+    private Label prepareStatLabel(String text, float x, float y, Label.LabelStyle textStyle){
+
+        Label lbl=new Label(text, textStyle);
+        lbl.setAlignment(Align.left);
+        lbl.setPosition(x,y);
+        uiStage.addActor(lbl);
+        return lbl;
+
+    }
+
     public void prepareUI(){
 
         TextButton.TextButtonStyle buttonStyle=new TextButton.TextButtonStyle();
         buttonStyle.font= juego.res.gameFont;
-        buttonStyle.font.getData().setScale(0.4f);
+        buttonStyle.font.getData().setScale(0.6f);
         buttonStyle.fontColor= Color.WHITE;
 
         uiStage.clear();
 
         Label.LabelStyle labelStyle=new Label.LabelStyle(juego.res.gameFont, Color.WHITE);
-        labelStyle.font.getData().setScale(0.4f);
+        labelStyle.font.getData().setScale(0.2f);
 
         if(GameProgress.levels[GameProgress.currentCharacter]==0){ // char is locked
 
@@ -104,8 +115,25 @@ public class CharacterSelectionScreen extends DefaultScreen {
 
 
         Image heroSprite= new Image(juego.res.playerSprites.get(CharacterRecord.CHARACTERS[GameProgress.currentCharacter].name));
-        heroSprite.setPosition((uiStage.getWidth()-heroSprite.getWidth())/2, (uiStage.getHeight()-heroSprite.getHeight())/2 );
+        heroSprite.setPosition((uiStage.getWidth()-heroSprite.getWidth())/4, (uiStage.getHeight()-heroSprite.getHeight())/2 );
         uiStage.addActor(heroSprite);
+
+        Label stat= prepareStatLabel("DMG: " + GameProgress.getPlayerDamage(),
+               uiStage.getWidth()/2,  heroSprite.getY() + heroSprite.getHeight()*3/5,
+                labelStyle);
+
+        stat= prepareStatLabel("HP: " + GameProgress.getPlayerMaxHp(),
+                uiStage.getWidth()/2,  stat.getY() - stat.getHeight(),
+                labelStyle);
+
+        stat= prepareStatLabel("HEAL: " + GameProgress.getPlayerHealthRestored(),
+                uiStage.getWidth()/2,  stat.getY() - stat.getHeight(),
+                labelStyle);
+
+        stat= prepareStatLabel("BNS: " + GameProgress.getPlayerBonusreductionValue(),
+                uiStage.getWidth()/2,  stat.getY() - stat.getHeight(),
+                labelStyle);
+
 
         int lvl=GameProgress.levels[GameProgress.currentCharacter];
         Label statusText=new Label(lvl>0 ? "LVL: " + lvl : "LOCKED", labelStyle);
@@ -113,7 +141,7 @@ public class CharacterSelectionScreen extends DefaultScreen {
         uiStage.addActor(statusText);
 
         TextButton nextButton=new TextButton(">>>", buttonStyle);
-        nextButton.setPosition(uiStage.getWidth()*5/6 - nextButton.getWidth()/2, uiStage.getHeight()/2);
+        nextButton.setPosition(uiStage.getWidth()*5/6 - nextButton.getWidth()/2, uiStage.getHeight()*5/6);
         nextButton.addListener(new ClickListener()
                                 {
                                     @Override
@@ -130,7 +158,7 @@ public class CharacterSelectionScreen extends DefaultScreen {
         uiStage.addActor(nextButton);
 
         TextButton prevButton=new TextButton("<<<", buttonStyle);
-        prevButton.setPosition(uiStage.getWidth()/6, uiStage.getHeight()/2);
+        prevButton.setPosition(uiStage.getWidth()/6, uiStage.getHeight()*5/6);
         prevButton.addListener(new ClickListener()
                                {
                                    @Override

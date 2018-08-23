@@ -22,7 +22,7 @@ public class Player extends Character {
         campoY=fy;
         set(res.playerSprites.get(CharacterRecord.CHARACTERS[GameProgress.currentCharacter].name));
         this.vidas=vidas;
-        max_lives= GameProgress.maxPlayerLive;
+        max_lives= GameProgress.getPlayerMaxHp();
 
     }
 
