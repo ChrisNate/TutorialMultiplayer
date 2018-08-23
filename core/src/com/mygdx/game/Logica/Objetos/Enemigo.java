@@ -12,7 +12,8 @@ import sun.awt.AWTAccessor;
 
 public class Enemigo extends Character {
 
-    private static final float BASE_ATTACK_TIME=3.0f;
+    private static final float BASE_ATTACK_TIME=1.0f;
+    private static final float WARM_UP_TIME = 2.0f ;
     private static float SCALE_TIME=1.5f;
 
     private float timeSinceAttack, nextAttackTime;
@@ -25,11 +26,13 @@ public class Enemigo extends Character {
     }
 
     private EnemyAttackListener attackListener;
+    private int tipo;
 
-    public Enemigo(Recursos res, EnemyAttackListener listener){
+    public Enemigo(Recursos res, EnemyAttackListener listener, int tipo){
 
         super(GameProgress.getEnemyLives());
-        set(res.enemy);
+        this.tipo=tipo;
+        set(res.enemySprite.get(tipo));
         resetAttackTime();
         attackListener=listener;
         targetTiles=new boolean[GameLogic.MAX_BASE_X+1][];
@@ -69,22 +72,138 @@ public class Enemigo extends Character {
 
         super.update(delta);
         timeSinceAttack+=delta;
-        if(timeSinceAttack> nextAttackTime){
+        if(timeAlive>WARM_UP_TIME &&timeSinceAttack> nextAttackTime){
 
-            int col1=MathUtils.random(GameLogic.MAX_BASE_X);
-            int col2=0;
-            do{
-                col2=MathUtils.random(GameLogic.MAX_BASE_X);
-            }while(col1==col2);
+            switch(tipo){
 
-            for(int x=0; x<GameLogic.MAX_BASE_X+1; x++){
-
-                for(int y=0; y<GameLogic.MAX_BASE_Y+1; y++){
-
-                    targetTiles[x][y]=(x==col1 || x== col2);               }
+                case Recursos.ENEMY_VERTICAL:
+                    performVerticalLineAttack();
+                    break;
+                case Recursos.ENEMY_HORIZONTAL:
+                    performHorizontalLineAttack();
+                    break;
+                case Recursos.ENEMY_DIAGONAL:
+                    performDiagonalAttack();
+                    break;
+                case Recursos.ENEMY_RANDOM:
+                    performRandomAttack();
+                    break;
+                default:
+                    performUniversalAttack();
+                    break;
             }
             attackListener.onAttack(targetTiles);
             resetAttackTime();
         }
     }
+
+    private void performVerticalLineAttack(){
+
+        int col1=MathUtils.random(GameLogic.MAX_BASE_X);
+        int col2=0;
+        do{
+            col2=MathUtils.random(GameLogic.MAX_BASE_X);
+        }while(col1==col2);
+
+        for(int x=0; x<GameLogic.MAX_BASE_X+1; x++){
+
+            for(int y=0; y<GameLogic.MAX_BASE_Y+1; y++){
+
+                targetTiles[x][y]=(x==col1 || x== col2);               }
+        }
+    }
+
+    private void performHorizontalLineAttack(){
+
+        int row1=MathUtils.random(GameLogic.MAX_BASE_Y);
+        int row2=0;
+        do{
+            row2=MathUtils.random(GameLogic.MAX_BASE_Y);
+        }while(row1==row2);
+
+        for(int x=0; x<GameLogic.MAX_BASE_X+1; x++){
+
+            for(int y=0; y<GameLogic.MAX_BASE_Y+1; y++){
+
+                targetTiles[x][y]=(y==row1 || y== row2);               }
+        }
+
+    }
+
+    private void fillDiagonal(int xstart, int dx){
+
+        for(int i=0; i<=GameLogic.MAX_BASE_Y; i++){
+
+            int nx= xstart + i*dx;
+            if(nx>GameLogic.MAX_BASE_X)nx=nx-GameLogic.MAX_BASE_X-1;
+            if(nx<0)nx=nx+GameLogic.MAX_BASE_X+1;
+            targetTiles[nx][i]=true;
+
+        }
+    }
+
+    private void performDiagonalAttack(){
+
+        int dx1=-1 + MathUtils.random(1)*2; // el rango estará entre -1 y 1
+        int dx2=-1 + MathUtils.random(1)*2; // el rango estará entre -1 y 1
+
+        int col1=MathUtils.random(GameLogic.MAX_BASE_X);
+        int col2=0;
+        do{
+            col2=MathUtils.random(GameLogic.MAX_BASE_X);
+        }while(col1==col2);
+
+        for(int x=0; x<GameLogic.MAX_BASE_X+1; x++){
+
+            for(int y=0; y<GameLogic.MAX_BASE_Y+1; y++){
+
+                targetTiles[x][y]=false;               }
+        }
+        fillDiagonal(col1, dx1);
+        fillDiagonal(col2, dx2);
+    }
+
+    private void performRandomAttack() {
+
+        for (int x = 0; x < GameLogic.MAX_BASE_X + 1; x++) {
+
+            for (int y = 0; y < GameLogic.MAX_BASE_Y + 1; y++) {
+
+                targetTiles[x][y] = false;
+            }
+        }
+
+        for(int i=0; i<10;i++){
+
+            int nx=MathUtils.random(GameLogic.MAX_BASE_X);
+            int ny=MathUtils.random(GameLogic.MAX_BASE_Y);
+            targetTiles[nx][ny]=true;
+
+        }
+    }
+
+    private void performUniversalAttack(){
+
+        int rnd=MathUtils.random(3);
+        switch(rnd){
+
+            case 0:
+                performVerticalLineAttack();
+                break;
+            case 1:
+                performHorizontalLineAttack();
+                break;
+            case 2:
+                performDiagonalAttack();
+                break;
+            case 3:
+                performRandomAttack();
+                break;
+            default:
+                performRandomAttack();
+                break;
+        }
+    }
+
+
 }

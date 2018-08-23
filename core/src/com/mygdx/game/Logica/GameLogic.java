@@ -7,6 +7,7 @@ import com.mygdx.game.Logica.Objetos.Bonus;
 import com.mygdx.game.Logica.Objetos.Enemigo;
 import com.mygdx.game.Logica.Objetos.Player;
 import com.mygdx.game.MTutorial;
+import com.mygdx.game.Recursos;
 
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
         juego=game;
         player=new Player(MathUtils.random(MAX_BASE_X), MathUtils.random(MAX_BASE_Y), juego.res, GameProgress.playerLives);
-        enemigo= new Enemigo(juego.res, this);
+        enemigo= new Enemigo(juego.res, this, MathUtils.random(Recursos.ENEMY_UNIVERSAL) );
         effectEngine=new EffectsEngine();
         bonus=new ArrayList<Bonus>();
         gameTime=0;

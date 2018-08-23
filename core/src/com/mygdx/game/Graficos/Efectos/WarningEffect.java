@@ -7,7 +7,7 @@ import com.mygdx.game.Recursos;
 
 public class WarningEffect extends Effect {
 
-    private static final float WARNING_TIME =0.5f ;
+    private static final float WARNING_TIME =0.75f ;
     private int campoX, campoY;
     private Recursos res;
 

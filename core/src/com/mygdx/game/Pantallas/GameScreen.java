@@ -153,7 +153,6 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
 
         fondo.draw(gameStage, juego.res);
         drawBases();
-        logica.getEffectEngine().draw(batch, sizeEvaluator);
         batch.begin();
         for(Bonus bonus: logica.getBonus()){
 
@@ -162,6 +161,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
         jugador.draw(batch, sizeEvaluator);
         logica.getEnemigo().draw(batch, sizeEvaluator);
         batch.end();
+        logica.getEffectEngine().draw(batch, sizeEvaluator);
         gameStage.getCamera().position.set(gameStage.getWidth()/2, gameStage.getHeight()/2, 0);
         if(jugador.getVidas()>0 && jugador.getTimeAlive()-jugador.getTimeOfDmgTaken()<SHAKE_TIME_ON_DAMAGE){
             gameStage.getCamera().translate(-(SHAKE_DIST/2)+ MathUtils.random(SHAKE_DIST), -(SHAKE_DIST/2)+ MathUtils.random(SHAKE_DIST), 0);
