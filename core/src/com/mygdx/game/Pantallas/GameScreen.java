@@ -17,6 +17,7 @@ import com.mygdx.game.Graficos.Efectos.WarningEffect;
 import com.mygdx.game.Graficos.Fondo;
 import com.mygdx.game.Graficos.SizeEvaluator;
 import com.mygdx.game.Logica.GameLogic;
+import com.mygdx.game.Logica.GameProgress;
 import com.mygdx.game.Logica.Objetos.Bonus;
 import com.mygdx.game.Logica.Objetos.Player;
 import com.mygdx.game.MTutorial;
@@ -116,6 +117,10 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
         batch.begin();
         drawShadowed("VIDAS: "+ jugador.getVidas(), 5,  gameStage.getHeight(), gameStage.getWidth(), Align.left, Color.WHITE );
         drawShadowed("ENEMIGO: "+ logica.getEnemigo().getVidas(), 0,  gameStage.getHeight(), gameStage.getWidth()-5, Align.right, Color.WHITE );
+
+        batch.draw(juego.res.coinBonus, gameStage.getViewport().getScreenX()+2, gameStage.getViewport().getScreenY()+5);
+        drawShadowed(""+ GameProgress.currentGold, gameStage.getViewport().getScreenX()+ juego.res.coinBonus.getWidth()+4,
+                gameStage.getViewport().getScreenY()+10+ juego.res.coinBonus.getHeight()/2, gameStage.getWidth()-4, Align.left, Color.WHITE);
         if(jugador.getVidas()<=0) {
 
           mostrarResultadoJuego("DERROTA");

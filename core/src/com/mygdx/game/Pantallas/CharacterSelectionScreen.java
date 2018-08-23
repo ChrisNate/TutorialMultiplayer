@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -88,6 +89,17 @@ public class CharacterSelectionScreen extends DefaultScreen {
                                }
         );
         uiStage.addActor(prevButton);
+
+        Image coinImage=new Image(juego.res.coinBonus);
+        coinImage.setPosition(1,1);
+        uiStage.addActor(coinImage);
+
+        Label.LabelStyle labelStyle=new Label.LabelStyle(juego.res.gameFont, Color.WHITE);
+        labelStyle.font.getData().setScale(0.4f);
+        Label coinAmountLabel=new Label(""+GameProgress.currentGold, labelStyle);
+        coinAmountLabel.setPosition(coinImage.getX()+coinImage.getWidth()+3, coinImage.getY()+(coinImage.getHeight()-coinAmountLabel.getHeight())/2);
+        uiStage.addActor(coinAmountLabel);
+
 
     }
 

@@ -11,6 +11,7 @@ public class Bonus extends Sprite implements Pool.Poolable{
 
     public static byte BONUS_TYPE_ATTACK=0;
     public static byte BONUS_TYPE_HEALTH=1;
+    public static byte BONUS_TYPE_COIN=2;
 
     private int campoX, campoY;
     private byte bonusType;
@@ -29,6 +30,9 @@ public class Bonus extends Sprite implements Pool.Poolable{
         }else if(bType==BONUS_TYPE_HEALTH){
 
             set(res.healthBonus);
+        }else if(bType==BONUS_TYPE_COIN){
+
+            set(res.coinBonus);
         }
     }
 

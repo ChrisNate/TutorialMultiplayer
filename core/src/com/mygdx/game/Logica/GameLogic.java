@@ -86,6 +86,11 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
                     }
 
+                }else if(bonusActual.getBonusType()==Bonus.BONUS_TYPE_COIN){
+
+                    GameProgress.currentGold++;
+
+
                 }
 
                 bonusActual.release();
@@ -117,9 +122,13 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
         }while(targetNonEmpty);
 
-        byte tipo=1;
-        float random=MathUtils.random();
-        if(random<0.5f)tipo=0;
+        byte tipo=Bonus.BONUS_TYPE_ATTACK;
+        int random=MathUtils.random(7);
+        if(random>6){
+            tipo=Bonus.BONUS_TYPE_HEALTH;
+        }else if(random>4){
+            tipo=Bonus.BONUS_TYPE_COIN;
+        }
         bonus.add(Bonus.Create(fx,fy, tipo, juego.res));
         lastBonusSpawnTime=gameTime;
 

@@ -5,11 +5,13 @@ import com.badlogic.gdx.Preferences;
 
 public class GameProgress {
 
+
     public static int playerLives=3;
     public static int maxPlayerLive=3;
     public static int playerDamage=1;
     public static int currentLevel=0;
     public static int currentCharacter=0;
+    public static int currentGold=0;
 
     private static final String PROGRESS_SAVE_NAME="progress";
 
@@ -17,6 +19,8 @@ public class GameProgress {
     private static final String SAVE_KEY_LIVES_MAX="livemax";
     private static final String SAVE_KEY_CURRENT_LEVEL="currentlevel";
     private static final String SAVE_KEY_PLAYER_DAMAGE="playerdamage";
+    private static final String SAVE_KEY_GOLD="currentgold";
+    private static final String SAVE_KEY_CURRENT_CHARACTER = "currentcharacter";
 
     public static int getEnemyLives(){
 
@@ -30,6 +34,8 @@ public class GameProgress {
         prefs.putInteger(SAVE_KEY_LIVES_MAX, maxPlayerLive);
         prefs.putInteger(SAVE_KEY_CURRENT_LEVEL, currentLevel);
         prefs.putInteger(SAVE_KEY_PLAYER_DAMAGE, playerDamage);
+        prefs.putInteger(SAVE_KEY_GOLD, currentGold);
+        prefs.putInteger(SAVE_KEY_CURRENT_CHARACTER, currentCharacter);
         prefs.flush();
 
     }
@@ -41,6 +47,8 @@ public class GameProgress {
         maxPlayerLive=prefs.getInteger(SAVE_KEY_LIVES_MAX, 3);
         playerDamage=prefs.getInteger(SAVE_KEY_PLAYER_DAMAGE, 1);
         currentLevel=prefs.getInteger(SAVE_KEY_CURRENT_LEVEL, 0);
+        currentCharacter=prefs.getInteger(SAVE_KEY_CURRENT_CHARACTER, 0);
+        currentGold=prefs.getInteger(SAVE_KEY_GOLD, 0);
     }
 
 
@@ -50,5 +58,7 @@ public class GameProgress {
         maxPlayerLive=3;
         currentLevel=0;
         playerDamage=1;
+        currentGold=0;
+        currentCharacter=0;
     }
 }

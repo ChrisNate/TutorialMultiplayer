@@ -15,13 +15,13 @@ public class Recursos {
 
     public TextureRegion ground;
     public TextureRegion wall;
-    public Sprite player;
+
     public HashMap<Integer, Sprite> enemySprite;
     public HashMap<String, Sprite> playerSprites;
     public TextureRegion base;
     public TextureRegion warning;
     public BitmapFont gameFont;
-    public Sprite attackBonus, healthBonus;
+    public Sprite attackBonus, healthBonus, coinBonus;
     public static final int ENEMY_VERTICAL=0; // spider
     public static final int ENEMY_HORIZONTAL=1; // ghost
     public static final int ENEMY_DIAGONAL=2; // bat
@@ -41,8 +41,9 @@ public class Recursos {
         warning=gameSprites.findRegion("warning");
         attackBonus=new Sprite(gameSprites.findRegion("attack"));
         healthBonus=new Sprite(gameSprites.findRegion("health"));
+        coinBonus=new Sprite(gameSprites.findRegion("coin"));
 
-        player=new Sprite(gameSprites.findRegion("player"));
+
         enemySprite= new HashMap<Integer, Sprite>();
         enemySprite.put(ENEMY_VERTICAL, gameSprites.createSprite("spider"));
         enemySprite.put(ENEMY_HORIZONTAL, gameSprites.createSprite("ghost"));
