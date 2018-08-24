@@ -59,6 +59,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
         sizeEvaluator=new SizeEvaluator(gameStage, juego.res, MAX_BASE_X, MAX_BASE_Y, gameStage.getWidth());
         logica=new GameLogic(juego, this);
         jugador=logica.getPlayer();
+        SoundManager.PlayBattleMusic();
 
 
 
@@ -183,6 +184,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
 
         super.dispose();
         batch.dispose();
+        SoundManager.StopBattleMusic();
         Gdx.input.setInputProcessor(null);
 
     }
