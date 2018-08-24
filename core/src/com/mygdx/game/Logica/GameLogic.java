@@ -80,7 +80,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
                     enemigo.recibirDamage(GameProgress.getPlayerDamage());
                     if(enemigo.getVidas()<=0){
 
-                        GameProgress.currentLevel+=1;
+                        GameProgress.increaseStage();
                         GameProgress.playerLives=player.getVidas();
                         player.markVictoria();
                         listener.omGameEnd(true);
@@ -179,8 +179,8 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
         if(efecto.getCampoX()== player.getCampoX() && efecto.getCampoY()==player.getCampoY()){
 
-            player.recibirDamage(1);
-            if(player.getVidas()<=0)GameProgress.Reset();
+            player.recibirDamage(GameProgress.getEnemyDamage());
+            if(player.getVidas()<=0)GameProgress.Reset(true);
 
 
         }

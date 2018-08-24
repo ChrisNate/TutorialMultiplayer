@@ -149,6 +149,7 @@ public class CharacterSelectionScreen extends DefaultScreen {
 
                                         GameProgress.currentCharacter++;
                                         if(GameProgress.currentCharacter==CharacterRecord.CHARACTERS.length)GameProgress.currentCharacter=0;
+                                        GameProgress.Reset(false);
                                         prepareUI();
                                     }
 
@@ -166,6 +167,7 @@ public class CharacterSelectionScreen extends DefaultScreen {
 
                                        GameProgress.currentCharacter--;
                                        if(GameProgress.currentCharacter<0)GameProgress.currentCharacter=CharacterRecord.CHARACTERS.length-1;
+                                       GameProgress.Reset(false);
                                        prepareUI();
                                    }
 
