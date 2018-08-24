@@ -20,6 +20,7 @@ public class MTutorial extends Game {
 
 		res=new Recursos();
 		GameProgress.Load();
+		SoundManager.LoadSounds();
 		setScreen(new CharacterSelectionScreen(this));
 
 	}
@@ -27,6 +28,7 @@ public class MTutorial extends Game {
 	@Override
 	public void dispose() {
 		GameProgress.Save();
+		SoundManager.ReleaseSounds();
 		res.dispose();
 	}
 }

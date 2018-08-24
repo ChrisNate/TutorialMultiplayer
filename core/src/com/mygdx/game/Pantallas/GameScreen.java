@@ -22,6 +22,7 @@ import com.mygdx.game.Logica.Objetos.Bonus;
 import com.mygdx.game.Logica.Objetos.Player;
 import com.mygdx.game.MTutorial;
 import com.mygdx.game.Recursos;
+import com.mygdx.game.SoundManager;
 
 import static com.mygdx.game.Logica.GameLogic.MAX_BASE_X;
 import static com.mygdx.game.Logica.GameLogic.MAX_BASE_Y;
@@ -200,6 +201,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
 
         if(jugador.getVidas()>0 && logica.getEnemigo().getVidas()>0 && logica.canMove(jugador.getCampoX()+dx, jugador.getCampoY()+dy)){
 
+            SoundManager.PlayWalkSound();
             logica.asignarPosicionJugador(jugador.getCampoX()+dx, jugador.getCampoY()+dy);
 
 
@@ -266,7 +268,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
     }
 
     @Override
-    public void omGameEnd(boolean playerWon) {
+    public void omGameEnd(final boolean playerWon) {
 
         gameStage.addAction(
                 Actions.sequence(
@@ -287,11 +289,28 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
                         @Override
                         public boolean act(float delta) {
                             dispose();
-                            juego.setScreen(new GameScreen(juego));
+                            if(playerWon){
+                                juego.setScreen(new GameScreen(juego));
+                            }else{
+                                juego.setScreen(new CharacterSelectionScreen(juego));
+                            }
+
                             return true;
                         }
                     }
                 )
         );
+    }
+
+    @Override
+    public void onBonusPickup(byte bonusType) {
+
+        if (bonusType==Bonus.BONUS_TYPE_COIN){
+
+            SoundManager.PlayCoinSound();
+        }else if(bonusType==Bonus.BONUS_TYPE_HEALTH){
+
+            SoundManager.PlayHealSound();
+        }
     }
 }

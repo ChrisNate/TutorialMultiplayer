@@ -20,7 +20,8 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
 
     public interface GameEventListener{
 
-        void omGameEnd(boolean playerWon);
+        void omGameEnd(final boolean playerWon);
+        void onBonusPickup(byte bonusType);
     }
 
 
@@ -71,6 +72,7 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
             Bonus bonusActual=bonus.get(i);
             if(bonusActual.getCampoX()==fx && bonusActual.getCampoY()==fy){
 
+                listener.onBonusPickup(bonusActual.getBonusType());
                 if(bonusActual.getBonusType()==Bonus.BONUS_TYPE_HEALTH){
 
                     player.addVidas(GameProgress.getPlayerHealthRestored());
@@ -180,7 +182,10 @@ public class GameLogic implements Enemigo.EnemyAttackListener, WarningEffect.War
         if(efecto.getCampoX()== player.getCampoX() && efecto.getCampoY()==player.getCampoY()){
 
             player.recibirDamage(GameProgress.getEnemyDamage());
-            if(player.getVidas()<=0)GameProgress.Reset(true);
+            if(player.getVidas()<=0){
+                listener.omGameEnd(false);
+                GameProgress.Reset(true);
+            }
 
 
         }

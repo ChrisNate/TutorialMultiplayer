@@ -1,6 +1,7 @@
 package com.mygdx.game.Logica.Objetos;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.SoundManager;
 
 public class Character extends Sprite {
 
@@ -24,6 +25,7 @@ public class Character extends Sprite {
 
     public void recibirDamage(int valor){
 
+        SoundManager.PlaySwingSound();
         timeOfDmgTaken=timeAlive;
         this.vidas-=valor;
         if(vidas<0)vidas=0;

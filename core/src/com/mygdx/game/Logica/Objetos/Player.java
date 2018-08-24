@@ -89,5 +89,6 @@ public class Player extends Character {
 
         winning=true;
         winTime=timeAlive;
+        GameProgress.playerLives=vidas;
     }
 }
