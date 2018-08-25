@@ -69,7 +69,7 @@ public class SoundManager {
 
     public static void PlayBattleMusic(){
 
-        bMusic=Gdx.audio.newMusic(Gdx.files.internal("music/music"+ MathUtils.random(5)+ ".mp3"));
+        bMusic=Gdx.audio.newMusic(Gdx.files.internal("music/music"+ MathUtils.random(4)+ ".mp3"));
         bMusic.setLooping(true);
         bMusic.play();
 

@@ -1,5 +1,6 @@
 package com.mygdx.game.Pantallas;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -9,8 +10,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mygdx.game.Graficos.Efectos.WarningEffect;
@@ -47,6 +53,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
     private GameLogic logica;
     private Player jugador;
 
+    private Group controlGroup;
+
 
 
 
@@ -60,10 +68,10 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
         logica=new GameLogic(juego, this);
         jugador=logica.getPlayer();
         SoundManager.PlayBattleMusic();
-
-
-
         Gdx.input.setInputProcessor(this);
+
+
+
         gameStage.addAction(
             new Action(){
 
@@ -82,7 +90,42 @@ public class GameScreen extends DefaultScreen implements InputProcessor, GameLog
         );
 
 
+        controlGroup= new Group();
+        gameStage.addActor(controlGroup);
 
+       // if(Gdx.app.getType()== Application.ApplicationType.Android){
+
+            prepareDirectionsButtons();
+        //}
+
+
+
+    }
+
+    private void prepareDirectionButton(final int dx, final int dy, TextureRegionDrawable img, float x, float y){
+
+        ImageButton imagen= new ImageButton(img);
+        imagen.setPosition(x,y);
+        imagen.addListener(new ClickListener(){
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+
+                intentarMover(dx, dy);
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+        controlGroup.addActor(imagen);
+
+
+    }
+
+    private void prepareDirectionsButtons() {
+
+        prepareDirectionButton(0,1, juego.res.upArrowBtn, 2, gameStage.getHeight()/2 + 2);
+        prepareDirectionButton(0,-1, juego.res.downArrowBtn, 2, gameStage.getHeight()/2 -16);
+        prepareDirectionButton(-1,0, juego.res.leftArrowBtn, gameStage.getWidth()-36, gameStage.getHeight()/2 -9);
+        prepareDirectionButton(1,0, juego.res.rightArrowBtn, gameStage.getWidth()-18, gameStage.getHeight()/2 -9);
     }
 
     public void update(float delta){

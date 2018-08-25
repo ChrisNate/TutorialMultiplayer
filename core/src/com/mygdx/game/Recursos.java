@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.Logica.Objetos.CharacterRecord;
 
 import java.util.HashMap;
@@ -27,6 +28,11 @@ public class Recursos {
     public static final int ENEMY_DIAGONAL=2; // bat
     public static final int ENEMY_RANDOM=3; // slime
     public static final int ENEMY_UNIVERSAL=4; // skeleton
+
+    public TextureRegionDrawable leftArrowBtn;
+    public TextureRegionDrawable rightArrowBtn;
+    public TextureRegionDrawable upArrowBtn;
+    public TextureRegionDrawable downArrowBtn;
 
     public static final int TILE_SIZE=16;
 
@@ -60,6 +66,11 @@ public class Recursos {
         playerSprites.put(CharacterRecord.CHAR_NAME_SKELETON, gameSprites.createSprite("skeleton"));
 
         base=gameSprites.findRegion("base");
+
+        leftArrowBtn=new TextureRegionDrawable(gameSprites.findRegion("leftArrow"));
+        rightArrowBtn=new TextureRegionDrawable(gameSprites.findRegion("rightArrow"));
+        upArrowBtn=new TextureRegionDrawable(gameSprites.findRegion("upArrow"));
+        downArrowBtn=new TextureRegionDrawable(gameSprites.findRegion("downArrow"));
     }
 
     public void dispose(){
